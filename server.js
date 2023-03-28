@@ -23,6 +23,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/", require("./routes/root"));
+app.use("/register", require("./routes/register"));
+app.use("/auth", require("./routes/auth"));
 app.use("/students", require("./routes/api/students"));
 
 // Error handler
