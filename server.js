@@ -6,6 +6,7 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const connectDB = require("./config/dbConn");
 const moongose = require("mongoose");
+const verifyJWT = require("./middleware/verifyJWT");
 const PORT = 4000;
 
 // Connect to mongo
@@ -22,9 +23,12 @@ app.use(express.urlencoded({ extended: false }));
 // built in middleware for json
 app.use(express.json());
 
+// routes
 app.use("/", require("./routes/root"));
 app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/auth"));
+
+app.use(verifyJWT);
 app.use("/students", require("./routes/api/students"));
 
 // Error handler
