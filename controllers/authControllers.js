@@ -16,22 +16,28 @@ const authController = async (req, res) => {
   // Check password
   const match = await bcrypt.compare(password, foundUser.password);
   if (match) {
+    // Find and filter roles
+    const roles = Object.values(foundUser.roles).filter(Boolean);
     // Access JWT token
     const accessToken = jwt.sign(
-      { username: foundUser.username },
+      {
+        UserInfo: {
+          username: username,
+          roles: roles,
+        },
+      },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15s" }
+      { expiresIn: "100s" }
     );
     // RefreshToken
     const refreshToken = jwt.sign(
       { username: foundUser.username },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1D" }
+      { expiresIn: "1d" }
     );
     // New property added
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
-    console.log(result);
     // Adding refresh token to secure cookie
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
