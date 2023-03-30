@@ -15,19 +15,15 @@ connectDB();
 // Cross origin resource sharing
 app.use(cors(corsOptions));
 
-// built-in middleware to handle urlencoded data
-// in other words, form data:
-// ‘content-type: application/x-www-form-urlencoded’
-app.use(express.urlencoded({ extended: false }));
-
 // built in middleware for json
 app.use(express.json());
 
 // routes
 app.use("/", require("./routes/root"));
 app.use("/register", require("./routes/register"));
-app.use("/auth", require("./routes/auth"));
+app.use("/login", require("./routes/auth"));
 
+// Verify access token before students route
 app.use(verifyJWT);
 app.use("/students", require("./routes/api/students"));
 

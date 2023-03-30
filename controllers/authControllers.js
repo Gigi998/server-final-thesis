@@ -27,7 +27,7 @@ const authController = async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "100s" }
+      { expiresIn: "10m" }
     );
     // RefreshToken
     const refreshToken = jwt.sign(
