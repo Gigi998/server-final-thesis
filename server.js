@@ -6,8 +6,9 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const connectDB = require("./config/dbConn");
 const moongose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const verifyJWT = require("./middleware/verifyJWT");
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 // Connect to mongo
 connectDB();
@@ -18,10 +19,14 @@ app.use(cors(corsOptions));
 // built in middleware for json
 app.use(express.json());
 
+// Middleware for cookies
+app.use(cookieParser());
+
 // routes
 app.use("/", require("./routes/root"));
 app.use("/register", require("./routes/register"));
-app.use("/login", require("./routes/auth"));
+app.use("/login", require("./routes/login"));
+app.use("/refresh", require("./routes/refresh"));
 
 // Verify access token before students route
 app.use(verifyJWT);

@@ -26,14 +26,13 @@ const deleteStudent = async (req, res) => {
   if (!req?.params?.id)
     return res.status(400).json({ message: "Id parametar is required" });
   const { id: StudentID } = req.params;
-  const findStudent = await Student.findOne({ _id: StudentID }).exec();
+  const findStudent = await Student.findOneAndDelete({ _id: StudentID }).exec();
   if (!findStudent) {
     return res
       .status(400)
       .json({ message: `There is no student matches your id ${StudentID}` });
   }
-  const result = await findStudent.deleteOne({ _id: StudentID });
-  res.json(result);
+  res.json(findStudent);
 };
 
 module.exports = { getAllStudents, addNewStudent, deleteStudent };
